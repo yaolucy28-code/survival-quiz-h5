@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>大厂生存人格测试</title>
+  <style>
+    :root {
+      --bg1: #eef2ff;
+      --bg2: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --subtext: #475569;
+      --line: #dbeafe;
+      --primary: #2563eb;
+      --primary-soft: #dbeafe;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(165deg, var(--bg1), var(--bg2));
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 14px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 460px;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.08);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .title {
+      font-size: 22px;
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+
+    .desc {
+      font-size: 14px;
+      color: var(--subtext);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .chip {
+      display: inline-block;
+      background: var(--primary-soft);
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 6px 10px;
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .bar-wrap {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      margin: 8px 0 14px;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #2563eb, #0ea5a4);
+      transition: width 0.25s ease;
+    }
+
+    .q-meta {
+      font-size: 13px;
+      color: var(--subtext);
+      margin-bottom: 8px;
+    }
+
+    .q-title {
+      font-size: 18px;
+      line-height: 1.55;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .q-statement {
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.65;
+      margin-bottom: 14px;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .q-statement-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 6px;
+    }
+
+    .likert-hint {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+
+    .likert {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .likert-btn {
+      width: 100%;
+      text-align: left;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 11px 12px;
+      background: #fff;
+      color: #1e293b;
+      font-size: 14px;
+      line-height: 1.45;
+      cursor: pointer;
+    }
+
+    .likert-btn:active {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .code-block {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-align: center;
+      color: #1d4ed8;
+      margin: 4px 0 12px;
+    }
+
+    .code-caption {
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .sub-profile {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.65;
+      margin-bottom: 14px;
+      padding: 10px 12px;
+      background: #f1f5f9;
+      border-radius: 12px;
+    }
+
+    .score-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: 22px 1fr 40px;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .score-row-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+
+    .score-row-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2563eb, #0ea5a4);
+      transition: width 0.25s ease;
+    }
+
+    .result-name {
+      font-size: 22px;
+      margin: 4px 0 10px;
+      color: #0f172a;
+    }
+
+    .result-desc {
+      line-height: 1.7;
+      color: #1e293b;
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+
+    .result-fit {
+      border: 1px dashed #93c5fd;
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #f8fbff;
+      color: #1e3a8a;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .result-tags {
+      font-size: 13px;
+      color: #0f766e;
+      margin-bottom: 14px;
+    }
+
+    .btn-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .btn-secondary {
+      background: #0f172a;
+      margin-top: 0;
+    }
+
+    .btn-tertiary {
+      background: #fff;
+      color: #1e293b;
+      border: 1px solid #cbd5e1;
+    }
+
+    .tips {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="card">
+      <section id="intro">
+        <span class="chip">10题 · 5级认同 · 约2分钟</span>
+        <h1 class="title">中国互联网大厂生存人格测试</h1>
+        <p class="desc">
+          这个测试融合了大厂常见语境：高节奏迭代、跨团队协同、目标导向、复盘文化、数据驱动和汇报机制。
+          每题先读场景，再判断陈述有多像你（5个等级），回答没有绝对好坏。
+        </p>
+        <button class="btn" id="startBtn">开始测试</button>
+        <p class="tips">仅供娱乐与自我观察，不代表任何企业真实招聘标准。</p>
+      </section>
+
+      <section id="quiz" class="hidden">
+        <div class="q-meta" id="qMeta"></div>
+        <div class="bar-wrap">
+          <div class="bar" id="progressBar"></div>
+        </div>
+        <h2 class="q-title" id="qTitle"></h2>
+        <div class="q-statement" id="qStatementWrap">
+          <div class="q-statement-label">陈述</div>
+          <p id="qStatement"></p>
+        </div>
+        <p class="likert-hint" id="likertHint">这句话有多像你？</p>
+        <div class="likert" id="likert"></div>
+      </section>
+
+      <section id="result" class="hidden">
+        <span class="chip">你的生存模式</span>
+        <div class="code-block" id="resultCode"></div>
+        <p class="code-caption" id="resultCodeCaption"></p>
+        <h2 class="result-name" id="resultName"></h2>
+        <p class="sub-profile" id="subProfile"></p>
+        <div class="score-list" id="scoreList"></div>
+        <p class="result-desc" id="resultDesc"></p>
+        <p class="result-fit" id="resultFit"></p>
+        <p class="result-tags" id="resultTags"></p>
+        <div class="btn-row">
+          <button class="btn" id="posterBtn">生成分享海报</button>
+          <button class="btn btn-tertiary" id="copyBtn">复制结果文案</button>
+          <button class="btn btn-secondary" id="restartBtn">再测一次</button>
+        </div>
+        <p class="tips" id="posterTip"></p>
+      </section>
+    </section>
+  </main>
+
+  <canvas id="posterCanvas" width="780" height="1380" class="hidden" aria-hidden="true"></canvas>
+
+  <script>
+    const modes = {
+      P: {
+        name: "推进型指挥官",
+        tags: "关键词：结果优先 / 强执行 / 决策快",
+        desc: "你偏向在不确定中先把事情推起来，关注里程碑和目标达成。面对大促、项目冲刺和高压节点，你更像“扛事的人”。",
+        fit: "适配场景：增长项目、业务突击队、跨部门推进角色。注意平衡节奏，避免因速度牺牲团队共识。"
+      },
+      C: {
+        name: "协同型润滑剂",
+        tags: "关键词：对齐共识 / 关系管理 / 稳态输出",
+        desc: "你擅长在复杂组织里“把人和信息串起来”。你会主动照顾上下游感受，降低沟通摩擦，让项目更平稳地落地。",
+        fit: "适配场景：平台型团队、跨BU协作项目、复杂流程项目。注意适当设边界，避免承担过量协调成本。"
+      },
+      D: {
+        name: "数据型操盘手",
+        tags: "关键词：指标意识 / 复盘思维 / 逻辑严密",
+        desc: "你习惯用数据和结构化分析说话，面对分歧时更依赖事实和实验结果。你能在复盘中快速定位问题并形成迭代方案。",
+        fit: "适配场景：策略、运营、商业分析、产品优化。注意别让分析过深拖慢决策窗口。"
+      },
+      A: {
+        name: "适应型生存家",
+        tags: "关键词：抗压强 / 弹性高 / 快速转场",
+        desc: "你对变化容忍度高，能在方向切换、组织调整或需求反复时快速自我重构。你更看重“在变化中保持可持续输出”。",
+        fit: "适配场景：新业务探索、早期团队、多线并行岗位。注意形成个人方法论，避免长期被动应对。"
+      }
+    };
+
+    const likertLabels = [
+      { label: "完全不像我", points: 1 },
+      { label: "不太像", points: 2 },
+      { label: "一半一半", points: 3 },
+      { label: "比较像", points: 4 },
+      { label: "非常像我", points: 5 }
+    ];
+
+    const questions = [
+      {
+        scenario: "周五晚上，核心项目临时加需求，负责人说“周一一早要看到可用版本”。",
+        statement: "我会先把最小可用版本拆出来并推动落地，同时把关键风险同步给决策人。",
+        mode: "P"
+      },
+      {
+        scenario: "跨部门会上，你的方案被连续质疑，气氛有点紧。",
+        statement: "我更在意先复述各方诉求，找到共同利益点，再一起推进下一步。",
+        mode: "C"
+      },
+      {
+        scenario: "团队进入稳定迭代，有人靠感觉推进，有人靠经验拍脑袋。",
+        statement: "我希望先搭好看板与指标体系，用数据节奏把迭代稳住。",
+        mode: "D"
+      },
+      {
+        scenario: "项目中途战略调整，你过去两周的材料可能大部分要重做。",
+        statement: "我会尽快切换心态与计划，把精力转去保护主链路产出。",
+        mode: "A"
+      },
+      {
+        scenario: "你被要求“要创新，也要立刻出结果”，资源还不充裕。",
+        statement: "我会优先拿短期可用的结果，再争取迭代与试错空间。",
+        mode: "P"
+      },
+      {
+        scenario: "多团队协作时经常出现信息断层和重复劳动。",
+        statement: "我愿意补连接与同步，把断点和误会尽量提前消化掉。",
+        mode: "C"
+      },
+      {
+        scenario: "老板问：“这件事为什么没达到预期？”",
+        statement: "我会先把漏斗与关键指标变化讲清楚，再给结构化归因与动作。",
+        mode: "D"
+      },
+      {
+        scenario: "需求方今天说要A，明天说要B，排期一直被打断。",
+        statement: "我会预留弹性方案，把频繁变化的成本控制在可接受范围。",
+        mode: "A"
+      },
+      {
+        scenario: "你要写周报、写文档，在组织里这不是小事。",
+        statement: "我更倾向用结论、指标与下一步去撬动资源与决策，而不是堆砌过程。",
+        mode: "P"
+      },
+      {
+        scenario: "你希望自己的“大厂生存能力”长期可迁移。",
+        statement: "我最希望自己在复杂协作里成为稳定器，而不是只靠个人硬扛。",
+        mode: "C"
+      }
+    ];
+
+    const modeMaxPossible = questions.reduce(
+      (acc, q) => {
+        acc[q.mode] += 5;
+        return acc;
+      },
+      { P: 0, C: 0, D: 0, A: 0 }
+    );
+
+    const intro = document.getElementById("intro");
+    const quiz = document.getElementById("quiz");
+    const result = document.getElementById("result");
+
+    const startBtn = document.getElementById("startBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const posterBtn = document.getElementById("posterBtn");
+    const posterTip = document.getElementById("posterTip");
+    const posterCanvas = document.getElementById("posterCanvas");
+
+    const qMeta = document.getElementById("qMeta");
+    const qTitle = document.getElementById("qTitle");
+    const qStatement = document.getElementById("qStatement");
+    const likertBox = document.getElementById("likert");
+    const progressBar = document.getElementById("progressBar");
+
+    const resultCode = document.getElementById("resultCode");
+    const resultCodeCaption = document.getElementById("resultCodeCaption");
+    const resultName = document.getElementById("resultName");
+    const subProfile = document.getElementById("subProfile");
+    const scoreList = document.getElementById("scoreList");
+    const resultDesc = document.getElementById("resultDesc");
+    const resultFit = document.getElementById("resultFit");
+    const resultTags = document.getElementById("resultTags");
+
+    let current = 0;
+    let scores = { P: 0, C: 0, D: 0, A: 0 };
+    let lastResult = {
+      primary: "P",
+      secondary: "",
+      code: "",
+      caption: ""
+    };
+
+    function resetState() {
+      current = 0;
+      scores = { P: 0, C: 0, D: 0, A: 0 };
+      posterTip.textContent = "";
+    }
+
+    function show(el) {
+      intro.classList.add("hidden");
+      quiz.classList.add("hidden");
+      result.classList.add("hidden");
+      el.classList.remove("hidden");
+    }
+
+    function renderQuestion() {
+      const item = questions[current];
+      qMeta.textContent = `第 ${current + 1} 题 / 共 ${questions.length} 题`;
+      qTitle.textContent = item.scenario;
+      qStatement.textContent = item.statement;
+      progressBar.style.width = `${((current + 1) / questions.length) * 100}%`;
+      likertBox.innerHTML = "";
+
+      likertLabels.forEach(({ label, points }) => {
+        const btn = document.createElement("button");
+        btn.className = "likert-btn";
+        btn.type = "button";
+        btn.textContent = label;
+        btn.addEventListener("click", () => {
+          scores[item.mode] += points;
+          current += 1;
+          if (current < questions.length) {
+            renderQuestion();
+          } else {
+            renderResult();
+          }
+        });
+        likertBox.appendChild(btn);
+      });
+    }
+
+    function sortedModes() {
+      return Object.entries(scores).sort((a, b) => b[1] - a[1]);
+    }
+
+    function resolvePrimary(sorted) {
+      if (sorted[0][1] === sorted[1][1]) {
+        const tie = [sorted[0][0], sorted[1][0]];
+        if (tie.includes("A")) return "A";
+      }
+      return sorted[0][0];
+    }
+
+    function resolveSecondary(sorted, primary) {
+      const runner = sorted[1][0];
+      if (runner === primary) return "";
+      if (sorted[0][1] - sorted[1][1] >= 5) return "";
+      return runner;
+    }
+
+    function buildSurvivalCode(sorted) {
+      const pcWinner = scores.P >= scores.C ? "P" : "C";
+      const daWinner = scores.D >= scores.A ? "D" : "A";
+      return `${pcWinner}${daWinner}${sorted[0][0]}${sorted[1][0]}`;
+    }
+
+    function renderScoreBars() {
+      scoreList.innerHTML = "";
+      const order = ["P", "C", "D", "A"];
+      order.forEach((key) => {
+        const row = document.createElement("div");
+        row.className = "score-row";
+        const denom = modeMaxPossible[key] || 1;
+        const pct = Math.min(100, Math.round((scores[key] / denom) * 100));
+        row.innerHTML = `
+          <span>${key}</span>
+          <div class="score-row-bar"><div class="score-row-fill" style="width:${pct}%"></div></div>
+          <span>${scores[key]}</span>`;
+        scoreList.appendChild(row);
+      });
+    }
+
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
+      const chars = Array.from(text);
+      let line = "";
+      let yy = y;
+      let lines = 0;
+      for (let i = 0; i < chars.length; i += 1) {
+        const testLine = line + chars[i];
+        if (ctx.measureText(testLine).width > maxWidth && line.length > 0) {
+          ctx.fillText(line, x, yy);
+          lines += 1;
+          if (lines >= maxLines) return yy + lineHeight;
+          line = chars[i];
+          yy += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      if (line) {
+        ctx.fillText(line, x, yy);
+        return yy + lineHeight;
+      }
+      return yy;
+    }
+
+    function drawPoster() {
+      const w = posterCanvas.width;
+      const h = posterCanvas.height;
+      const ctx = posterCanvas.getContext("2d");
+      const grd = ctx.createLinearGradient(0, 0, w, h);
+      grd.addColorStop(0, "#eef2ff");
+      grd.addColorStop(0.45, "#dbeafe");
+      grd.addColorStop(1, "#ccfbf1");
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.fillStyle = "rgba(255,255,255,0.55)";
+      ctx.fillRect(40, 120, w - 80, h - 240);
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "600 34px PingFang SC, Microsoft YaHei, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("中国互联网大厂生存人格测试", w / 2, 190);
+
+      ctx.fillStyle = "#1d4ed8";
+      ctx.font = "700 92px monospace";
+      ctx.fillText(lastResult.code, w / 2, 360);
+
+      ctx.fillStyle = "#475569";
+      ctx.font = "400 24px PingFang SC, Microsoft YaHei, sans-serif";
+      ctx.fillText("生存码（MBTI风格四字母）", w / 2, 420);
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "600 40px PingFang SC, Microsoft YaHei, sans-serif";
+      ctx.fillText(modes[lastResult.primary].name, w / 2, 510);
+
+      ctx.fillStyle = "#1e293b";
+      ctx.font = "400 28px PingFang SC, Microsoft YaHei, sans-serif";
+      ctx.textAlign = "left";
+      const desc = modes[lastResult.primary].desc;
+      const descBottom = wrapText(ctx, desc, 70, 580, w - 140, 40, 5);
+
+      ctx.fillStyle = "#0f766e";
+      ctx.font = "400 24px PingFang SC, Microsoft YaHei, sans-serif";
+      ctx.fillText(modes[lastResult.primary].tags, 70, Math.max(860, descBottom + 70));
+
+      ctx.fillStyle = "#64748b";
+      ctx.font = "400 22px PingFang SC, Microsoft YaHei, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("仅供娱乐与自我观察", w / 2, h - 90);
+    }
+
+    function downloadPoster() {
+      drawPoster();
+      posterCanvas.toBlob((blob) => {
+        if (!blob) {
+          posterTip.textContent = "生成图片失败，可改用截图。";
+          return;
+        }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `大厂生存人格_${lastResult.code}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+        posterTip.textContent = "已保存 PNG 到下载目录（或按浏览器提示查看）。";
+      });
+    }
+
+    function renderResult() {
+      const sorted = sortedModes();
+      const primary = resolvePrimary(sorted);
+      const secondary = resolveSecondary(sorted, primary);
+      const code = buildSurvivalCode(sorted);
+      const caption = [
+        `第1位：推进/协同（${scores.P >= scores.C ? "P" : "C"}）`,
+        `第2位：数据/适应（${scores.D >= scores.A ? "D" : "A"}）`,
+        `第3–4位：得分冠亚军（${sorted[0][0]} / ${sorted[1][0]}）`
+      ].join(" · ");
+
+      lastResult = { primary, secondary, code, caption };
+
+      const profile = modes[primary];
+      resultCode.textContent = code;
+      resultCodeCaption.textContent = caption;
+      resultName.textContent = profile.name;
+
+      if (secondary) {
+        const sub = modes[secondary];
+        subProfile.textContent = `副型倾向：${sub.name} —— 当分差不大时，你可能会在不同场景下“切换皮肤”。`;
+      } else {
+        subProfile.textContent = "副型倾向：本次结果主信号较强，其他维度更像支撑背景。";
+      }
+
+      renderScoreBars();
+
+      resultDesc.textContent = profile.desc;
+      resultFit.textContent = profile.fit;
+      resultTags.textContent = profile.tags;
+      show(result);
+    }
+
+    function startQuiz() {
+      resetState();
+      show(quiz);
+      renderQuestion();
+    }
+
+    async function copyResultText() {
+      const text = [
+        `我在「中国互联网大厂生存人格测试」中的生存码是：${lastResult.code}`,
+        `${resultCodeCaption.textContent}`,
+        `主类型：${resultName.textContent}`,
+        subProfile.textContent,
+        `${resultTags.textContent}`,
+        `${resultDesc.textContent}`,
+        `${resultFit.textContent}`,
+        `分数：P ${scores.P} · C ${scores.C} · D ${scores.D} · A ${scores.A}`
+      ].join("\n");
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = "已复制，可直接粘贴分享";
+        setTimeout(() => {
+          copyBtn.textContent = "复制结果文案";
+        }, 1600);
+      } catch (err) {
+        copyBtn.textContent = "复制失败，请手动长按复制";
+      }
+    }
+
+    startBtn.addEventListener("click", startQuiz);
+    restartBtn.addEventListener("click", startQuiz);
+    copyBtn.addEventListener("click", copyResultText);
+    posterBtn.addEventListener("click", downloadPoster);
+  </script>
+</body>
+</html>
